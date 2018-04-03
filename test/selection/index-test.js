@@ -13,7 +13,7 @@ tape("d3.selection() returns a selection of the document element", function(test
 });
 
 tape("d3.selection.prototype can be extended", function(test) {
-  var document = jsdom("<input type='checkbox'>"),
+  var document = global.document = jsdom("<input type='checkbox'>"),
       s = d3.select(document.querySelector("[type=checkbox]"));
   try {
     d3.selection.prototype.checked = function(value) {

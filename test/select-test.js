@@ -3,7 +3,7 @@ var tape = require("tape"),
     d3 = require("../");
 
 tape("d3.select(…) returns an instanceof d3.selection", function(test) {
-  var document = jsdom("<h1>hello</h1>");
+  var document = global.document = jsdom("<h1>hello</h1>");
   test.ok(d3.select(document) instanceof d3.selection);
   test.end();
 });
@@ -19,27 +19,27 @@ tape("d3.select(string) selects the first element that matches the selector stri
 });
 
 tape("d3.select(element) selects the given element", function(test) {
-  var document = jsdom("<h1>hello</h1>");
+  var document = global.document = jsdom("<h1>hello</h1>");
   test.deepEqual(d3.select(document.body), {_groups: [[document.body]], _parents: [null]});
   test.deepEqual(d3.select(document.documentElement), {_groups: [[document.documentElement]], _parents: [null]});
   test.end();
 });
 
 tape("d3.select(window) selects the given window", function(test) {
-  var document = jsdom("<h1>hello</h1>");
+  var document = global.document = jsdom("<h1>hello</h1>");
   test.deepEqual(d3.select(document.defaultView), {_groups: [[document.defaultView]], _parents: [null]});
   test.end();
 });
 
 tape("d3.select(document) selects the given document", function(test) {
-  var document = jsdom("<h1>hello</h1>");
+  var document = global.document = jsdom("<h1>hello</h1>");
   test.deepEqual(d3.select(document), {_groups: [[document]], _parents: [null]});
   test.end();
 });
 
 tape("d3.select(null) selects null", function(test) {
-  var document = jsdom("<h1>hello</h1><null></null><undefined></undefined>");
-  test.deepEqual(d3.select(null), {_groups: [[null]], _parents: [null]});
+  var document = global.document = jsdom("<h1>hello</h1><null></null><undefined></undefined>");
+  test.deepEqual(d3.select(null), {_groups: [[undefined]], _parents: [null]});
   test.deepEqual(d3.select(undefined), {_groups: [[undefined]], _parents: [null]});
   test.deepEqual(d3.select(), {_groups: [[undefined]], _parents: [null]});
   test.end();

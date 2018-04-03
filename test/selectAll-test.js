@@ -3,7 +3,7 @@ var tape = require("tape"),
     d3 = require("../");
 
 tape("d3.selectAll(…) returns an instanceof d3.selection", function(test) {
-  var document = jsdom("<h1>hello</h1>");
+  var document = global.document = jsdom("<h1>hello</h1>");
   test.ok(d3.selectAll([document]) instanceof d3.selection);
   test.end();
 });
@@ -19,13 +19,13 @@ tape("d3.selectAll(string) selects all elements that match the selector string, 
 });
 
 tape("d3.selectAll(nodeList) selects a NodeList of elements", function(test) {
-  var document = jsdom("<h1>hello</h1><h2>world</h2>");
+  var document = global.document = jsdom("<h1>hello</h1><h2>world</h2>");
   test.deepEqual(d3.selectAll(document.querySelectorAll("h1,h2")), {_groups: [document.querySelectorAll("h1,h2")], _parents: [null]});
   test.end();
 });
 
 tape("d3.selectAll(array) selects an array of elements", function(test) {
-  var document = jsdom("<h1>hello</h1><h2>world</h2>"),
+  var document = global.document = jsdom("<h1>hello</h1><h2>world</h2>"),
       h1 = document.querySelector("h1"),
       h2 = document.querySelector("h2");
   test.deepEqual(d3.selectAll([h1, h2]), {_groups: [[h1, h2]], _parents: [null]});
@@ -54,7 +54,7 @@ tape("d3.selectAll(null) selects a new empty array each time", function(test) {
 });
 
 tape("d3.selectAll(array) can select an array that contains null", function(test) {
-  var document = jsdom("<h1>hello</h1><h2>world</h2>"),
+  var document = global.document = jsdom("<h1>hello</h1><h2>world</h2>"),
       h1 = document.querySelector("h1");
   test.deepEqual(d3.selectAll([null, h1, null]), {_groups: [[null, h1, null]], _parents: [null]});
   test.end();
